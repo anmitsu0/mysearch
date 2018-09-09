@@ -1,8 +1,8 @@
 # -*- coding:utf-8 -*-
 
-from bottle import route, run, view, static_file, url
-from bottle import get, post, request
-from bottle import error
+from lib.bottle import route, run, view, static_file, url
+from lib.bottle import request
+from lib.bottle import error
 
 
 @route('/static/<filepath:path>', name='static_file')
