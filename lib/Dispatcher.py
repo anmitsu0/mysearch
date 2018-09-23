@@ -33,6 +33,6 @@ class Dispatcher:
 
         # capitalize:先頭の一文字を大文字、他を小文字にする
         class_name = self.root_page.capitalize() + 'Controller'
-        module = importlib.import_module(project_name + '/controllers/' + class_name)
+        module = importlib.import_module(project_name + '.controllers.' + class_name)
         class_obj = getattr(module, class_name)
         self.controller = class_obj()
