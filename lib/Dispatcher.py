@@ -8,6 +8,7 @@ class Dispatcher:
     DEFAULT_PROJECT_NAME = 'sample'
     DEFAULT_PAGE = 'index'
     DEFAULT_ACTION = 'index'
+    DEFAULT_OPTION = ''
     PAGE_LIST = {
         DEFAULT_PROJECT_NAME: [
             DEFAULT_PAGE,
@@ -22,16 +23,22 @@ class Dispatcher:
     def __init__(self):
         self.current_page = self.DEFAULT_PAGE
         self.current_action = self.DEFAULT_ACTION
+        self.current_option = self.DEFAULT_OPTION
         self.controller = None
 
-    def dispatch(self, project_name=DEFAULT_PROJECT_NAME, request_uri=''):
-        if project_name not in self.PAGE_LIST.keys() or not request_uri:
+    def dispatch(
+            self,
+            project_name=DEFAULT_PROJECT_NAME,
+            page='',
+            action='',
+            option=''
+    ):
+        if project_name not in self.PAGE_LIST.keys():
             return
 
-        params = request_uri.split('/')
         # 1番目のパラメーターをコントローラー名(ページ名)として取得
-        if len(params) > 0 and params[0] in self.PAGE_LIST[project_name]:
-            self.current_page = params[0]
+        if page in self.PAGE_LIST[project_name]:
+            self.current_page = page
 
         # (capitalize: 先頭の一文字を大文字、他を小文字にする)
         class_name = self.current_page.capitalize() + 'Controller'
@@ -44,8 +51,8 @@ class Dispatcher:
         self.controller = class_obj()
 
         # 2番目のパラメーターをメソッド名として取得
-        if len(params) > 1:
-            self.current_action = params[1]
+        if action:
+            self.current_action = action
 
         # (lower: 全ての文字を小文字にする)
         action_name = self.current_action.lower() + '_action'
@@ -54,3 +61,7 @@ class Dispatcher:
         if hasattr(self.controller, action_name):
             action_method = getattr(self.controller, action_name)
             action_method()
+
+        # 3番目のパラメーターをオプション情報として取得
+        if option:
+            self.current_option = option
