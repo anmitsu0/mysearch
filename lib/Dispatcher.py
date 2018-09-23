@@ -18,8 +18,8 @@ class Dispatcher:
         ],
     }
 
-    def __init__(self, root_page=DEFAULT_ROOT_PAGE):
-        self.root_page = root_page
+    def __init__(self):
+        self.root_page = self.DEFAULT_ROOT_PAGE
         self.controller = None
 
     def dispatch(self, project_name=DEFAULT_PROJECT_NAME, request_uri=''):
