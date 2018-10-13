@@ -8,7 +8,7 @@ app = Bottle()
 TEMPLATE_PATH.append('../sample/views')
 
 
-@app.route('/', name='init')
+@app.route('/', method='GET', name='init')
 def index():
     return jinja2_template('sign_up.html')
 

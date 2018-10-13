@@ -4,13 +4,14 @@
 
 from lib.bottle import Bottle, TEMPLATE_PATH, jinja2_template, request
 # from sample.models.data import user
+from sample.controllers import refresh
 
 
 app = Bottle()
 TEMPLATE_PATH.append('../sample/views')
 
 
-@app.route('/', name='init')
+@app.route('/', method='GET', name='init')
 def index():
     return jinja2_template('login.html')
 
@@ -36,12 +37,9 @@ def index():
     #         'login.html',
     #         attention=u'不正なアクセスです',
     #     )
-    # user_secret_id = user.get_secret_id(
-    #     user_name=user_name, user_password=user_password
-    # )
-    # return jinja2_template('refresh.html', user_secret_id=user_secret_id)
+    secret_id = refresh.make_secret_id(user_name=user_name, user_password=user_password)
+    refresh.update_secret_id(secret_id=secret_id)
     return jinja2_template(
-        'refresh.html',
-        user_name=user_name,
-        user_password=user_password
+        refresh.last_visit_website_name(),
+        secret_id=secret_id,
     )
