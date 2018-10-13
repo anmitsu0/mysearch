@@ -1,0 +1,25 @@
+{% extends "sample/views/base.html" %}
+
+{% block body %}
+
+    <form action="/sample/search" method="post">
+        <table border="0">
+            <tr>
+                <td>ユーザー名</td>
+                <td><input type="text" name="user_name" size="30" maxlength="20"></td>
+            </tr>
+            <tr>
+                <td>パスワード</td>
+                <td><input type="password" name="user_password" size="30" maxlength="20"></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>
+                    <input type="submit" value="ログイン">
+                    <input type="reset" value="リセット">
+                </td>
+            </tr>
+        </table>
+    </form>
+
+{% endblock %}
