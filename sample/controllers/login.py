@@ -21,7 +21,7 @@ def index():
     user_name = '' if user_name is None else str(user_name)
     user_password = request.forms.get('user_password')
     user_password = '' if user_password is None else str(user_password)
-    if len(user_name) != 0 or len(user_password) != 0:
+    if len(user_name) == 0 or len(user_password) == 0:
         return jinja2_template(
             'login.html',
             attention=u'ユーザー名またはパスワードの入力漏れがあります',
