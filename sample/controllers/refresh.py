@@ -10,5 +10,8 @@ TEMPLATE_PATH.append('./sample/views')
 
 
 @app.get('/')
+@jinja2_view('search.html')
 def index():
-    return {'message': 'This is sample_{} page.'.format(argv[0]),}
+    return {
+        'message': 'This is sample_{} page.'.format(argv[0]),
+    }

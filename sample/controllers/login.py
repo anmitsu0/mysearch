@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 # -*- coding:utf-8 -*-
 
-from lib.bottle import Bottle, TEMPLATE_PATH, jinja2_view
-from sys import argv
+from lib.bottle import Bottle, TEMPLATE_PATH, jinja2_template, request
+# from sample.models.data import user
 
 
 app = Bottle()
@@ -10,9 +10,29 @@ TEMPLATE_PATH.append('./sample/views')
 
 
 @app.route('/')
-@jinja2_view('login.html')
 def index():
-    return {
-        'message': 'This is sample_{} page.'.format(argv[0]),
-        'title': u'ログイン'
-    }
+    return jinja2_template('login.html')
+
+
+@app.route('/', method='POST')
+def index():
+    user_name = request.forms.get('user_name')
+    user_name = '' if user_name is None else str(user_name)
+    user_password = request.forms.get('user_password')
+    user_password = '' if user_password is None else str(user_password)
+    if len(user_name) != 0 or len(user_password) != 0:
+        return jinja2_template(
+            'login.html',
+            attention=u'ユーザー名またはパスワードの入力漏れがあります',
+        )
+    # if not user.is_correct(user_name=user_name, user_password=user_password):
+    #     return jinja2_template(
+    #         'login.html',
+    #         attention=u'ユーザー名またはパスワードが間違っています。',
+    #     )
+    # if not is_correct_url(url=request.url):
+    #     return jinja2_template(
+    #         'login.html',
+    #         attention=u'不正なアクセスです',
+    #     )
+    return jinja2_template('refresh.html')

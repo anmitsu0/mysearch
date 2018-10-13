@@ -2,7 +2,13 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>{% if title %}{{ title }}{% else %}sample{% endif %}</title>
+    <title>
+        {% if title %}
+            {{ title }}
+        {% else %}
+            {% block title %}{% endblock %}
+        {% endif %}
+    </title>d
 </head>
 <body>
     {% block body %}{% endblock %}
