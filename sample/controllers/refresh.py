@@ -2,16 +2,14 @@
 # -*- coding:utf-8 -*-
 
 from lib.bottle import Bottle, TEMPLATE_PATH, jinja2_view
-from sys import argv
 
 
 app = Bottle()
-TEMPLATE_PATH.append('./sample/views')
+TEMPLATE_PATH.append('../sample/views')
 
 
 @app.get('/')
-@jinja2_view('search.html')
+@jinja2_view('refresh.html')
 def index():
-    return {
-        'message': 'This is sample_{} page.'.format(argv[0]),
-    }
+    file_name = __file__.split('/')[-1].split('.')[0]
+    return {'message': 'This is sample_{} page.'.format(file_name)}

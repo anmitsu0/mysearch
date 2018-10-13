@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 # -*- coding:utf-8 -*-
 
-from lib.bottle import run, Bottle
+
+from lib.bottle import Bottle
 from sample.controllers import index as sample_index
 
 
@@ -10,7 +11,7 @@ root = Bottle()
 
 @root.route('/')
 def index():
-    return {'message': 'Hello. This is top page.'}
+    return str('Hello. This is top page.')
 
 
 if __name__ == '__main__':
@@ -18,4 +19,4 @@ if __name__ == '__main__':
     # このようにワンクッション置くことで、/sampleと言うようなURLのみの場合にも何かメッセージを表示することが可能。
     root.mount('/sample', sample_index.app)
 
-    run(host='localhost', port=8080, debug=True, reloader=True)
+    root.run(host='localhost', port=8080, debug=True, reloader=True)

@@ -1,12 +1,13 @@
 #!/usr/bin/env python3
 # -*- coding:utf-8 -*-
 
+
 from lib.bottle import Bottle, TEMPLATE_PATH, jinja2_template, request
 # from sample.models.data import user
 
 
 app = Bottle()
-TEMPLATE_PATH.append('./sample/views')
+TEMPLATE_PATH.append('../sample/views')
 
 
 @app.route('/')
@@ -28,11 +29,19 @@ def index():
     # if not user.is_correct(user_name=user_name, user_password=user_password):
     #     return jinja2_template(
     #         'login.html',
-    #         attention=u'ユーザー名またはパスワードが間違っています。',
+    #         attention=u'ユーザー名またはパスワードが間違っています',
     #     )
     # if not is_correct_url(url=request.url):
     #     return jinja2_template(
     #         'login.html',
     #         attention=u'不正なアクセスです',
     #     )
-    return jinja2_template('refresh.html')
+    # user_secret_id = user.get_secret_id(
+    #     user_name=user_name, user_password=user_password
+    # )
+    # return jinja2_template('refresh.html', user_secret_id=user_secret_id)
+    return jinja2_template(
+        'refresh.html',
+        user_name=user_name,
+        user_password=user_password
+    )
