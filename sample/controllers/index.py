@@ -2,7 +2,7 @@
 # -*- coding:utf-8 -*-
 
 from lib.bottle import Bottle
-from sample.controllers import login, refresh, search, manage, add_website, edit_profile
+from sample.controllers import login, sign_up, refresh, search, manage, add_website, edit_profile
 
 
 app = Bottle()
@@ -16,6 +16,7 @@ def index():
 
 # resources/でアクセスできるRESTful API群を以下に羅列していく
 app.mount('/login', login.app)
+app.mount('/sign_up', sign_up.app)
 app.mount('/refresh', refresh.app)
 app.mount('/search', search.app)
 app.mount('/admin', manage.app)

@@ -1,9 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding:utf-8 -*-
 
-
 from lib.bottle import Bottle, TEMPLATE_PATH, jinja2_template, request
-# from sample.models.data import user
 
 
 app = Bottle()
@@ -12,7 +10,7 @@ TEMPLATE_PATH.append('../sample/views')
 
 @app.route('/', name='init')
 def index():
-    return jinja2_template('login.html')
+    return jinja2_template('sign_up.html')
 
 
 @app.route('/', method='POST', name='confirm')
@@ -23,25 +21,15 @@ def index():
     user_password = '' if user_password is None else str(user_password)
     if len(user_name) == 0 or len(user_password) == 0:
         return jinja2_template(
-            'login.html',
+            'sign_up.html',
             attention=u'ユーザー名またはパスワードの入力漏れがあります',
         )
-    # if not user.find_id(user_name=user_name, user_password=user_password):
+    # if user.find_password(user_password=user_password):
     #     return jinja2_template(
-    #         'login.html',
-    #         attention=u'ユーザー名またはパスワードが間違っています',
+    #         'sign_up.html',
+    #         attention=u'使用済みのパスワードです',
     #     )
-    # if not correct_url(url=request.url):
-    #     return jinja2_template(
-    #         'login.html',
-    #         attention=u'不正なアクセスです',
-    #     )
-    # user_secret_id = user.get_secret_id(
+    # user.make_id(
     #     user_name=user_name, user_password=user_password
     # )
-    # return jinja2_template('refresh.html', user_secret_id=user_secret_id)
-    return jinja2_template(
-        'refresh.html',
-        user_name=user_name,
-        user_password=user_password
-    )
+    return jinja2_template('login.html')

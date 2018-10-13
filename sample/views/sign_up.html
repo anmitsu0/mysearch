@@ -1,12 +1,12 @@
 {% extends "base.html" %}
 
 {% block title %}
-ログイン画面
+新規登録画面
 {% endblock %}
 
 {% block body %}
 
-    <form action="/sample/login" method="post">
+    <form action="/sample/sign_up" method="post" name="sign_up">
         <table border="0">
             <tr>
                 <td>ユーザー名</td>
@@ -19,13 +19,22 @@
             <tr>
                 <td></td>
                 <td>
-                    <input type="submit" value="ログイン">
+                    <input type="button" value="登録" onClick="check()">
                     <input type="reset" value="リセット">
                 </td>
             </tr>
         </table>
     </form>
-    <a href="sign_up">ユーザー新規登録</a>
     {% if attention %}<font color="ff0000">{{ attention }}</font>{% endif %}
+
+    <script>
+    <!--
+    function check(){
+        if(confirm("入力に間違いはないですか？")){
+            document.sign_up.submit();
+        }
+    }
+    // -->
+    </script>
 
 {% endblock %}
