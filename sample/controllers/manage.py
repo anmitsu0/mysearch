@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding:utf-8 -*-
 
-
 from lib.bottle import Bottle
 from sys import argv
 
