@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding:utf-8 -*-
 
-from lib.bottle import Bottle, TEMPLATE_PATH, jinja2_template
+from lib.bottle import Bottle, TEMPLATE_PATH
 from sample.controllers import login, sign_up, search, manage, add_website, edit_profile
 
 

@@ -2,20 +2,9 @@
 # -*- coding:utf-8 -*-
 
 from lib.bottle import Bottle, request, redirect
-from beaker.middleware import SessionMiddleware
-
-
-# セッションの設定
-session_opts = {
-    'session.type': 'file',
-    'session.data_dir': '../data/logs',
-    'session.cookie_expires': True,
-    'session.auto': True,
-}
 
 
 app = Bottle()
-apps = SessionMiddleware(app, session_opts)
 
 
 def make_secret_id(user_name, user_password):

@@ -8,7 +8,7 @@ from sample.controllers import refresh
 
 
 app = Bottle()
-TEMPLATE_PATH.append('../sample/views')
+TEMPLATE_PATH.append('/tmp')
 
 
 @app.route('/', method='GET', name='init')
@@ -38,7 +38,7 @@ def index():
     #         attention=u'不正なアクセスです',
     #     )
     secret_id = refresh.make_secret_id(user_name=user_name, user_password=user_password)
-    refresh.update_secret_id(secret_id=secret_id)
+    refresh.update_secret_id(secret_id)
     return jinja2_template(
         refresh.last_visit_website_name(),
         secret_id=secret_id,
