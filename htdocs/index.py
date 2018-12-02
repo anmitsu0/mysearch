@@ -2,7 +2,8 @@
 # -*- coding:utf-8 -*-
 
 
-from lib.bottle import Bottle, run
+from lib.bottle import Bottle
+from lib.bottle import run
 from beaker.middleware import SessionMiddleware
 from sample.controllers import index as sample_index
 

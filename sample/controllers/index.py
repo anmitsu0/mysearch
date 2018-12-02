@@ -1,8 +1,14 @@
 #!/usr/bin/env python3
 # -*- coding:utf-8 -*-
 
-from lib.bottle import Bottle, TEMPLATE_PATH
-from sample.controllers import login, sign_up, search, manage, add_website, edit_profile
+from lib.bottle import Bottle
+from lib.bottle import TEMPLATE_PATH
+from sample.controllers import login
+from sample.controllers import sign_up
+from sample.controllers import search
+from sample.controllers import manage
+from sample.controllers import add_website
+from sample.controllers import edit_profile
 
 
 app = Bottle()

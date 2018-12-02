@@ -1,35 +1,45 @@
 #!/usr/bin/env python3
 # -*- coding:utf-8 -*-
 
-from lib.bottle import Bottle, TEMPLATE_PATH, jinja2_template, request
+from lib.bottle import Bottle
+from lib.bottle import TEMPLATE_PATH
+from lib.bottle import jinja2_template
+from lib.bottle import request
+from sample.models.data import user
 
 
 app = Bottle()
 TEMPLATE_PATH.append('../sample/views')
 
 
-@app.route('/', method='GET', name='init')
+@app.route('/', method=["GET", "POST"])
 def index():
-    return jinja2_template('sign_up.html')
-
-
-@app.route('/', method='POST', name='confirm')
-def index():
-    user_name = request.forms.get('user_name')
-    user_name = '' if user_name is None else str(user_name)
+    sign_up_page = "sign_up.html"
+    login_page = "login.html"
+    search_page = "search.html"
+    session = request.environ.get('beaker.session')
+    # セッション情報が残っていた場合
+    if session.get("user_id"):
+        # 最後にどこかのページに訪問していた場合、そのページに移る
+        if session.get("last_stay_page"):
+            return jinja2_template(session["last_stay_page"])
+        else:
+            return jinja2_template(search_page)
+    # 初回入場時
+    if request.method == "GET":
+        return jinja2_template(sign_up_page)
+    user_id = request.forms.get('user_id')
     user_password = request.forms.get('user_password')
-    user_password = '' if user_password is None else str(user_password)
-    if len(user_name) == 0 or len(user_password) == 0:
+    # ユーザー登録
+    if not user_id or not user_password:
         return jinja2_template(
-            'sign_up.html',
+            sign_up_page,
             attention=u'ユーザー名またはパスワードの入力漏れがあります',
         )
-    # if user.find_password(user_password=user_password):
-    #     return jinja2_template(
-    #         'sign_up.html',
-    #         attention=u'使用済みのパスワードです',
-    #     )
-    # user.make_id(
-    #     user_name=user_name, user_password=user_password
-    # )
-    return jinja2_template('login.html')
+    if user.User().confirm_user(user_id, user_password):
+        return jinja2_template(
+            sign_up_page,
+            attention=u'既に登録済みのユーザー名とパスワードです',
+        )
+    user.User().register_user(user_id, user_password)
+    return jinja2_template(login_page)
