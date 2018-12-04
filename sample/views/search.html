@@ -13,7 +13,7 @@
         </div>
     </form>
     <form action="/sample/search" method="post" name="delete_website">
-        {% for website in website_list %}
+        {% for website in websites %}
             <input type="checkbox" name="delete_website_ids" value="{{ website.id }}">{{ website.id }}. <br>
             <table border="0">
                 <tr><td>サイト名</td><td>{{ website.name }}</td></tr>
