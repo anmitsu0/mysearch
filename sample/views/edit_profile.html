@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block title %}
+ユーザー情報変更画面
+{% endblock %}
+
+{% block body %}
+    {% if update_user == "execute" %}ユーザー情報を更新しました{% endif %}
+    <form action="/sample/edit_profile" method="post">
+        {% if confirm_user == "ok" %}<input type="hidden" name="update_user" value="execute">
+        {% else %}<input type="hidden" name="confirm_user" value="ok">{% endif %}
+        <table border="0">
+            <tr>
+                <td>{% if confirm_user == "ok" %}新しい{% else %}現在の{% endif %}ユーザー名</td>
+                <td><input type="text" name="user_name" size="30" maxlength="20"></td>
+            </tr>
+            <tr>
+                <td>{% if confirm_user == "ok" %}新しい{% else %}現在の{% endif %}パスワード</td>
+                <td><input type="password" name="user_password" size="30" maxlength="20"></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>
+                    <input type="submit" value="{% if confirm_user == 'ok' %}決定{% else %}登録{% endif %}">
+                    <input type="reset" value="リセット">
+                </td>
+            </tr>
+        </table>
+    </form>
+    <a href="search">検索画面</a>
+    {% if attention %}<font color="ff0000">{{ attention }}</font>{% endif %}
+{% endblock %}

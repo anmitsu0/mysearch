@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block title %}
+管理画面
+{% endblock %}
+
+{% block body %}
+
+    <a href="login">戻る</a>
+    <!--<form action="/sample/manage" method="post">-->
+        <!--<table border="0">-->
+            <!--<tr>-->
+                <!--<td>ユーザー名</td>-->
+                <!--<td><input type="text" name="user_name" size="30" maxlength="20"></td>-->
+            <!--</tr>-->
+            <!--<tr>-->
+                <!--<td>パスワード</td>-->
+                <!--<td><input type="password" name="user_password" size="30" maxlength="20"></td>-->
+            <!--</tr>-->
+            <!--<tr>-->
+                <!--<td></td>-->
+                <!--<td>-->
+                    <!--<input type="submit" value="ログイン">-->
+                    <!--<input type="reset" value="リセット">-->
+                <!--</td>-->
+            <!--</tr>-->
+        <!--</table>-->
+    <!--</form>-->
+    {% if attention %}<font color="ff0000">{{ attention }}</font>{% endif %}
+
+{% endblock %}
