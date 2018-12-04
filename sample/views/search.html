@@ -11,21 +11,25 @@
             <input type="text" name="search_word" size="30" maxlength="20">
             <input type="submit" value="検索">
         </div>
+        <input type="hidden" name="websites" value="{{ websites }}">
     </form>
     <form action="/sample/search" method="post" name="delete_website">
         {% for website in websites %}
-            <input type="checkbox" name="delete_website_ids" value="{{ website.id }}">{{ website.id }}. <br>
+            <input type="checkbox" name="delete_website_ids" value="{{ website._id }}">{{ website._id }}. <br>
             <table border="0">
                 <tr><td>サイト名</td><td>{{ website.name }}</td></tr>
                 <tr><td>リンク</td><td>{{ website.link }}</td></tr>
                 <tr><td>概要</td><td>{{ website.outline }}</td></tr>
                 <!--<tr><td>検索ワード</td><td>{{ search_word }}</td></tr>-->
-                <!--<tr><td>検索ワード 関連度</td><td>{{ website.search_word_relevance }}</td></tr>-->
-                <!--<tr><td>検索ワード ヒット数</td><td>{{ website.search_word_hit_count }}</td></tr>-->
+                <!--<tr><td>検索ワード 関連度</td><td>{{ search_word_relevance[website._id] }}</td></tr>-->
+                <!--<tr><td>検索ワード ヒット数</td><td>{{ search_word_hit_count[website._id] }}</td></tr>-->
                 <!--<tr><td>最頻出ワード</td><td>{{ website.most_frequent_word }}</td></tr>-->
             </table>
         {% endfor %}
-        <input type="hidden" name="delete_website" value="execute">
+        <input type="hidden" name="websites" value="{{ websites }}">
+        <input type="hidden" name="search_word" value="{{ search_word }}">
+        <input type="hidden" name="search_word_relevance" value="{{ search_word_relevance }}">
+        <input type="hidden" name="search_word_hit_count" value="{{ search_word_hit_count }}">
         <font color="red"><input type="button" value="削除" onClick="check()"></font>
         <input type="reset" value="リセット">
     </form>

@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding:utf-8 -*-
 
+import sys
 import mysql.connector
 from lib.bottle import Bottle
 from sample import config
@@ -25,8 +26,21 @@ class DB(object):
         if self._DATABASE is not None:
             self.conn.close()
 
-    def is_exist_table(self):
-        pass
+    def is_exist_table(self, table_name):
+        try:
+            self.curs.execute("""
+                SELECT COUNT(*) FROM {0}
+                WHERE TYPE='table' AND name='{1}';
+                """.format(config.PROJECT_NAME, table_name))
+        except Exception as e:
+            self.error_print(e, self.is_exist_table)
+            self.close_conn()
+        if self.curs.fetchone()[0] == 0:
+            return False
+        return True
 
     def create_table(self):
         pass
+
+    def error_print(self, e, file_name, func_name):
+        sys.stderr.write("{0}\n\tfile:{1}\n\tfunc:{2}".format(e, file_name, func_name))

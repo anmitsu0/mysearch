@@ -27,8 +27,8 @@ def index():
     # 初回入場時
     if request.method == "GET":
         return jinja2_template(login_page)
-    user_id = request.forms.get('user_id')
-    user_password = request.forms.get('user_password')
+    user_id = request.forms.get('user_id', "")
+    user_password = request.forms.get('user_password', "")
     # ログイン認証
     if not user_id or not user_password:
         return jinja2_template(

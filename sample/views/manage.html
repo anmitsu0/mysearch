@@ -8,7 +8,7 @@
 
     <form action="/sample/manage" method="post" name="delete_user">
         {% for user in users %}
-            <input type="checkbox" name="delete_user_ids" value="{{ user.id }}">{{ user.id }}. <br>
+            <input type="checkbox" name="delete_user_ids" value="{{ user._id }}">{{ user._id }}. <br>
             <table border="0">
                 <tr><td>ユーザー名</td><td onClick="pulldown_user_info({{ roop.index }})">{{ user.name }}</td></tr>
             </table>
@@ -41,8 +41,8 @@
                         + "<tr><td>リンク</td><td>{{ website.link }}</td></tr>"
                         + "<tr><td>概要</td><td>{{ website.outline }}</td></tr>"
                         + "<!--<tr><td>検索ワード</td><td>{{ search_word }}</td></tr>-->"
-                        + "<!--<tr><td>検索ワード 関連度</td><td>{{ website.search_word_relevance }}</td></tr>-->"
-                        + "<!--<tr><td>検索ワード ヒット数</td><td>{{ website.search_word_hit_count }}</td></tr>-->"
+                        + "<!--<tr><td>検索ワード 関連度</td><td>{{ search_word_relevance[website._id] }}</td></tr>-->"
+                        + "<!--<tr><td>検索ワード ヒット数</td><td>{{ search_word_hit_count[website._id] }}</td></tr>-->"
                         + "<!--<tr><td>最頻出ワード</td><td>{{ website.most_frequent_word }}</td></tr>-->"
                     + "</table>"
                 + "{% endfor %}"
