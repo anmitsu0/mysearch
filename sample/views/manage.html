@@ -33,6 +33,7 @@
     function pulldown_user_info(roop_index) {
         var user_website = document.getElementById(roop_index);  // TODO: loop_indexをstringにしたい
         if (user_website.innerHTML == "") {
+            // TODO: solve: not execute {% ... %} before insert this one
             user_website.innerHTML = [
                 "{% for website in user[loop_index].websites %}",
                     "<table border='0'>",

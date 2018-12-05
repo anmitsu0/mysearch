@@ -33,10 +33,11 @@ class DB(object):
                 config.PROJECT_NAME,
                 table_name
             ))
+            return bool(self.curs.fetchall())
         except Exception as e:
             self.error_print(e, __file__, self.is_exist_table.__name__)
             self.close_conn()
-        return bool(self.curs.fetchall())
+            return False
 
     def create_table(self):
         pass

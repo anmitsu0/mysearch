@@ -13,7 +13,7 @@ app = Bottle()
 TEMPLATE_PATH.append('../sample/views')
 
 
-@app.route('/')
+@app.route('/', method=["GET", "POST"])
 def index():
     manage_page = "manage.html"
     login_page = "login.html"

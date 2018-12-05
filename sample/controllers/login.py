@@ -44,7 +44,7 @@ def index():
             login_page,
             user_id=user_id,
             user_password=user_password,
-            attention=u'既に登録済みのユーザー名とパスワードです',
+            attention=u'ユーザー名またはパスワードに誤りがあります',
         )
     session["user_id"] = user_id
     # 管理ユーザーのid, passwordが入力されたとき

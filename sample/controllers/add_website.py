@@ -12,7 +12,7 @@ app = Bottle()
 TEMPLATE_PATH.append('../sample/views')
 
 
-@app.route('/')
+@app.route('/', method=["GET", "POST"])
 def index():
     add_website_page = "add_website.html"
     login_page = "login.html"
@@ -21,9 +21,9 @@ def index():
     # セッション情報が残っていた場合
     if user_id:
         cls_website = website.Website()
-        website_name = request.forms.get('website_name', "")
-        website_link = request.forms.get('website_link', "")
-        website_keywords = request.forms.get('website_keywords', "")
+        website_name = request.forms.decode().get('website_name', "")
+        website_link = request.forms.decode().get('website_link', "")
+        website_keywords = request.forms.decode().get('website_keywords', "")
         complete_add_website = request.forms.get('complete_add_website', "False")
         if website_link:
             if not website_name:
@@ -38,6 +38,8 @@ def index():
                     )
                 website_name = cls_website.get_website_title_with_link(website_link)
             website_keywords = cls_website.get_website_keywords_with_link(website_link)
+            if complete_add_website == "True":
+                cls_website.add_website(user_id, website_name, website_link, website_keywords)
         elif complete_add_website == "True":
             # エラー(URL入力まだの状態で、サイト登録ボタンを押した場合)
             return jinja2_template(

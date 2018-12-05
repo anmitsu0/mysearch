@@ -21,7 +21,7 @@ class User(db.DB):
                 "_id int NOT NULL AUTO_INCREMENT, "
                 "id varchar(20) NOT NULL, "
                 "password varchar(20) NOT NULL, "
-                "create_date datetime DEFAULT CURRENT_TIMESTAMP, "
+                "create_date datetime NOT NULL DEFAULT CURRENT_TIMESTAMP, "
                 "PRIMARY KEY(_id));"
             ).format(
                 config.PROJECT_NAME,
@@ -44,10 +44,11 @@ class User(db.DB):
                 user_id,
                 user_password
             ))
+            return bool(self.curs.fetchall())
         except Exception as e:
             self.error_print(e, __file__, self.confirm_user.__name__)
             self.close_conn()
-        return bool(self.curs.fetchall())
+            return False
 
     def register_user(self, user_id, user_password):
         try:
@@ -90,7 +91,8 @@ class User(db.DB):
                 config.PROJECT_NAME,
                 self._TABLE_NAME
             ))
+            return self.curs.fetchall()
         except Exception as e:
             self.error_print(e, __file__, self.get_users.__name__)
             self.close_conn()
-        return self.curs.fetchall()
+            return None
