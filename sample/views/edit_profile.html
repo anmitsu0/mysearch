@@ -5,10 +5,10 @@
 {% endblock %}
 
 {% block body %}
-    {% if update_user == "execute" %}ユーザー情報を更新しました{% endif %}
+    {% if complete_update_user == "True" %}ユーザー情報を更新しました{% endif %}
     <form action="/sample/edit_profile" method="post">
-        {% if confirm_user == "ok" %}<input type="hidden" name="update_user" value="execute">
-        {% else %}<input type="hidden" name="confirm_user" value="ok">{% endif %}
+        {% if confirm_user == "True" %}<input type="hidden" name="complete_update_user" value="True">
+        {% else %}<input type="hidden" name="confirm_user" value="True">{% endif %}
         <table border="0">
             <tr>
                 <td>{% if confirm_user == "ok" %}新しい{% else %}現在の{% endif %}ユーザー名</td>

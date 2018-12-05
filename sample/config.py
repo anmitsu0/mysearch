@@ -24,3 +24,8 @@ DB_INFO["CentOS"] = dict(
     passwd="eagSLk9e2f",
     charset="utf8"
 )
+
+ADMIN_USER_INFO = dict(
+    id = "admin",
+    password = "q2Qyj2Fb2pubwlkbm3eb"
+)

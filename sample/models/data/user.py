@@ -23,9 +23,8 @@ class User(db.DB):
             self.curs.execute("""
                 CREATE TABLE {}(
                 _id int NOT NULL AUTO_INCREMENT,
-                id int(20) NOT NULL,
+                id varchar(20) NOT NULL,
                 password varchar(20) NOT NULL,
-                name varchar NOT NULL DEFAULT 'guest',
                 create_date datetime NOT NULL,
                 PRIMARY KEY(id));"
                 """.format(self._TABLE_NAME))
@@ -63,3 +62,33 @@ class User(db.DB):
         except Exception as e:
             self.error_print(e, __file__, self.register_user.__name__)
             self.close_conn()
+    
+    def delete_users(self, delete_user_ids):
+        copied_delete_user_ids = []
+        if delete_user_ids and isinstance(delete_user_ids, list):
+            copied_delete_user_ids = delete_user_ids.copy()
+        try:
+            self.curs.execute("""
+                DELETE FROM {0}.{1}
+                WHERE _id IN ({2});
+                """.format(
+                config.PROJECT_NAME,
+                self._TABLE_NAME,
+                *copied_delete_user_ids)
+            )
+        except Exception as e:
+            self.error_print(e, __file__, self.delete_users.__name__)
+            self.close_conn()
+
+    def get_users(self):
+        try:
+            self.curs.execute("""
+                SELECT * FROM {0}.{1};
+                """.format(
+                config.PROJECT_NAME,
+                self._TABLE_NAME)
+            )
+        except Exception as e:
+            self.error_print(e, __file__, self.get_users.__name__)
+            self.close_conn()
+        return self.curs.fetchall()

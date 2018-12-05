@@ -5,10 +5,12 @@
 {% endblock %}
 
 {% block body %}
-    {% if delete_website == "execute" %}チェック項目({{ delete_website_ids|length }}個)を削除しました{% endif %}
+    <h1>アカウント：{{ user_id }}</h1>
+    {% if complete_delete_websites == "True" %}チェック項目を削除しました<br>{% endif %}
+    <a href="add_website">サイト登録</a>
     <form action="/sample/search" method="post">
         <div>
-            <input type="text" name="search_word" size="30" maxlength="20">
+            <input type="text" name="search_word" value="{{ search_word }}" size="30" maxlength="20">
             <input type="submit" value="検索">
         </div>
         <input type="hidden" name="websites" value="{{ websites }}">
@@ -20,15 +22,13 @@
                 <tr><td>サイト名</td><td>{{ website.name }}</td></tr>
                 <tr><td>リンク</td><td>{{ website.link }}</td></tr>
                 <tr><td>概要</td><td>{{ website.outline }}</td></tr>
-                <!--<tr><td>検索ワード</td><td>{{ search_word }}</td></tr>-->
-                <!--<tr><td>検索ワード 関連度</td><td>{{ search_word_relevance[website._id] }}</td></tr>-->
-                <!--<tr><td>検索ワード ヒット数</td><td>{{ search_word_hit_count[website._id] }}</td></tr>-->
+                <tr><td>検索ワード</td><td>{{ search_word }}</td></tr>
+                <tr><td>検索ワード ヒット数</td><td>{{ search_word_hit_count[website._id] }}</td></tr>
                 <!--<tr><td>最頻出ワード</td><td>{{ website.most_frequent_word }}</td></tr>-->
             </table>
         {% endfor %}
         <input type="hidden" name="websites" value="{{ websites }}">
         <input type="hidden" name="search_word" value="{{ search_word }}">
-        <input type="hidden" name="search_word_relevance" value="{{ search_word_relevance }}">
         <input type="hidden" name="search_word_hit_count" value="{{ search_word_hit_count }}">
         <font color="red"><input type="button" value="削除" onClick="check()"></font>
         <input type="reset" value="リセット">

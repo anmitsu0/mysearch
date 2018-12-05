@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block title %}
+サイト登録画面
+{% endblock %}
+
+{% block body %}
+    <h1>アカウント：{{ user_id }}</h1>
+    {% if complete_add_website == "True" %}サイト登録完了しました<br>{% endif %}
+    <a href="search">検索ページに戻る</a>
+    <form action="/sample/search" method="post">
+        <div>
+            <textarea name="website_link" rows="4" cols="50">{{ website_link }}</textarea>
+            <input type="submit" value="URL入力">
+        </div>
+    </form>
+    <form action="/sample/search" method="post">
+        <table border="0">
+            <tr>
+                <td>サイト名</td>
+                <td><textarea name="website_name" rows="4" cols="50">{{ website_name }}</textarea></td>
+            </tr>
+            <tr>
+                <td>リンク</td>
+                <td><textarea name="website_link" rows="4" cols="50" readonly>{{ website_link }}</textarea></td>
+            </tr>
+            <tr>
+                <td>キーワード</td>
+                <td><textarea name="website_keywords" rows="4" cols="50" readonly>{{ website_keywords }}</textarea></td>
+            </tr>
+        </table>
+        <input type="hidden" name="complete_add_website" value="True">
+        <input type="button" value="サイト登録">
+        <input type="reset" value="リセット">
+    </form>
+    {% if attention %}<font color="ff0000">{{ attention }}</font>{% endif %}
+{% endblock %}
