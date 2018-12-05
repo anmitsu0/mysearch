@@ -36,7 +36,7 @@ class User(db.DB):
     def confirm_user(self, user_id, user_password):
         try:
             self.curs.execute("""
-                SELECT COUNT(*) FROM {0}.{1}
+                SELECT * FROM {0}.{1}
                 WHERE id = '{2}'
                 AND password = '{3}';
                 """.format(
@@ -48,7 +48,7 @@ class User(db.DB):
         except Exception as e:
             self.error_print(e, __file__, self.confirm_user.__name__)
             self.close_conn()
-        if self.curs.fetchone()[0] == 0:
+        if self.curs is None:
             return False
         return True
 
@@ -91,4 +91,4 @@ class User(db.DB):
         except Exception as e:
             self.error_print(e, __file__, self.get_users.__name__)
             self.close_conn()
-        return self.curs.fetchall()
+        return None if self.curs is None else self.curs.fetchall()

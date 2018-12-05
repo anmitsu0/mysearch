@@ -15,7 +15,7 @@ class DB(object):
 
     def __init__(self):
         self.conn = self.get_conn()
-        self.curs = self.conn.cursor(buffered=True)
+        self.curs = self.conn.cursor(buffered=True, dictionary=True)
 
     def get_conn(self):
         if self._DATABASE is None:
@@ -29,13 +29,13 @@ class DB(object):
     def is_exist_table(self, table_name):
         try:
             self.curs.execute("""
-                SELECT COUNT(*) FROM {0}
+                SELECT * FROM {0}
                 WHERE TYPE='table' AND name='{1}';
                 """.format(config.PROJECT_NAME, table_name))
         except Exception as e:
-            self.error_print(e, self.is_exist_table)
+            self.error_print(e, __file__, self.is_exist_table.__name__)
             self.close_conn()
-        if self.curs.fetchone()[0] == 0:
+        if self.curs is None:
             return False
         return True
 

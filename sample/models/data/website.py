@@ -62,7 +62,7 @@ class Website(db.DB):
         except Exception as e:
             self.error_print(e, __file__, self.get_websites.__name__)
             self.close_conn()
-        return self.curs.fetchall()
+        return None if self.curs is None else self.curs.fetchall()
 
     def get_websites_with_search_word(self, user_id, search_word):
         if not search_word:
@@ -81,7 +81,7 @@ class Website(db.DB):
         except Exception as e:
             self.error_print(e, __file__, self.get_websites.__name__)
             self.close_conn()
-        return self.curs.fetchall()
+        return None if self.curs is None else self.curs.fetchall()
 
     def search_word_hit_count(self, user_id, search_word):
         if not search_word:
@@ -91,7 +91,7 @@ class Website(db.DB):
         try:
             for website in websites:
                 html = requests.get(website["link"])
-                # print("[swht] html_info\n{}".format(html.text))
+                # print("[hit_count] html_info\n{}".format(html.text))
                 soup = BeautifulSoup(html.text, "lxml")
                 body = soup.find("body").text
                 hit_count.append(body.count(search_word))
@@ -105,7 +105,7 @@ class Website(db.DB):
             return ""
         try:
             html = requests.get(link)
-            # print("[swht] html_info\n{}".format(html.text))
+            # print("[title] html_info\n{}".format(html.text))
             soup = BeautifulSoup(html.text, "lxml")
             return soup.find("title").text
         except Exception as e:
@@ -117,7 +117,7 @@ class Website(db.DB):
             return ""
         try:
             html = requests.get(link)
-            # print("[swht] html_info\n{}".format(html.text))
+            # print("[keywords] html_info\n{}".format(html.text))
             soup = BeautifulSoup(html.text, "lxml")
             return soup.find("meta", name="keywords").get("content", "")
         except Exception as e:
