@@ -5,32 +5,32 @@
 {% endblock %}
 
 {% block body %}
-    <h1>アカウント：{{ user_id }}</h1>
+    <h2>アカウント：{{ user_id }}</h2>
     {% if complete_add_website == "True" %}サイト登録完了しました<br>{% endif %}
     <a href="search">検索ページに戻る</a>
-    <form action="/sample/search" method="post">
+    <form action="/sample/add_website" method="post">
         <div>
-            <textarea name="website_link" rows="4" cols="50">{{ website_link }}</textarea>
+            <input type="text" name="website_link" value="{{ website_link }}" size="50" maxlength="2000">
             <input type="submit" value="URL入力">
         </div>
     </form>
-    <form action="/sample/search" method="post">
+    <form action="/sample/add_website" method="post">
         <table border="0">
             <tr>
                 <td>サイト名</td>
-                <td><textarea name="website_name" rows="4" cols="50">{{ website_name }}</textarea></td>
+                <td><input type="text" name="website_name" value="{{ website_name }}" size="50" maxlength="500"></td>
             </tr>
             <tr>
                 <td>リンク</td>
-                <td><textarea name="website_link" rows="4" cols="50" readonly>{{ website_link }}</textarea></td>
+                <td><input type="text" name="website_link" value="{{ website_link }}" size="50" maxlength="2000" disabled></td>
             </tr>
             <tr>
                 <td>キーワード</td>
-                <td><textarea name="website_keywords" rows="4" cols="50" readonly>{{ website_keywords }}</textarea></td>
+                <td><input type="text" name="website_keywords" value="{{ website_keywords }}" size="50" maxlength="100" disabled></td>
             </tr>
         </table>
         <input type="hidden" name="complete_add_website" value="True">
-        <input type="button" value="サイト登録">
+        <input type="submit" value="サイト登録">
         <input type="reset" value="リセット">
     </form>
     {% if attention %}<font color="ff0000">{{ attention }}</font>{% endif %}

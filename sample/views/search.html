@@ -5,12 +5,13 @@
 {% endblock %}
 
 {% block body %}
-    <h1>アカウント：{{ user_id }}</h1>
+    <h2>アカウント：{{ user_id }}</h2>
     {% if complete_delete_websites == "True" %}チェック項目を削除しました<br>{% endif %}
     <a href="add_website">サイト登録</a>
+    <a href="edit_profile">ユーザー情報変更</a>
     <form action="/sample/search" method="post">
         <div>
-            <input type="text" name="search_word" value="{{ search_word }}" size="30" maxlength="20">
+            <input type="text" name="search_word" value="{{ search_word }}" size="50" maxlength="50">
             <input type="submit" value="検索">
         </div>
         <input type="hidden" name="websites" value="{{ websites }}">

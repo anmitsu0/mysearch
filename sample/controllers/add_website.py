@@ -38,7 +38,7 @@ def index():
                     )
                 website_name = cls_website.get_website_title_with_link(website_link)
             website_keywords = cls_website.get_website_keywords_with_link(website_link)
-        else:
+        elif complete_add_website == "True":
             # エラー(URL入力まだの状態で、サイト登録ボタンを押した場合)
             return jinja2_template(
                 add_website_page,

@@ -34,12 +34,20 @@ def index():
     if not user_id or not user_password:
         return jinja2_template(
             sign_up_page,
+            user_id=user_id,
+            user_password=user_password,
             attention=u'ユーザー名またはパスワードの入力漏れがあります',
         )
     if user.User().confirm_user(user_id, user_password):
         return jinja2_template(
             sign_up_page,
+            user_id=user_id,
+            user_password=user_password,
             attention=u'既に登録済みのユーザー名とパスワードです',
         )
     user.User().register_user(user_id, user_password)
-    return jinja2_template(login_page)
+    return jinja2_template(
+        login_page,
+        user_id=user_id,
+        user_password=user_password
+    )

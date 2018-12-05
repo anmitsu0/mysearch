@@ -35,11 +35,15 @@ def index():
     if not user_id or not user_password:
         return jinja2_template(
             login_page,
+            user_id=user_id,
+            user_password=user_password,
             attention=u'ユーザー名またはパスワードの入力漏れがあります',
         )
     if not user.User().confirm_user(user_id, user_password):
         return jinja2_template(
             login_page,
+            user_id=user_id,
+            user_password=user_password,
             attention=u'既に登録済みのユーザー名とパスワードです',
         )
     session["user_id"] = user_id
@@ -47,7 +51,7 @@ def index():
     if user_id == config.ADMIN_USER_INFO["id"] and user_password == config.ADMIN_USER_INFO["password"]:
         session["last_stay_page"] = manage_page
     # セッション切れのとき
-    elif not session["last_stay_page"]:
+    elif not session.get("last_stay_page"):
         session["last_stay_page"] = search_page
     session.save()
     return jinja2_template(session["last_stay_page"])

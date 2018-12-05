@@ -9,6 +9,7 @@ from sample.controllers import search
 from sample.controllers import manage
 from sample.controllers import add_website
 from sample.controllers import edit_profile
+from lib.bottle import request
 
 
 app = Bottle()
@@ -19,11 +20,13 @@ TEMPLATE_PATH.append('../sample/views')
 app.mount('/login', login.app)
 app.mount('/sign_up', sign_up.app)
 app.mount('/search', search.app)
-app.mount('/admin', manage.app)
+app.mount('/manage', manage.app)
 app.mount('/add_website', add_website.app)
 app.mount('/edit_profile', edit_profile.app)
 
 
 @app.get('/')
 def index():
+    session = request.environ.get('beaker.session')
+    session.delete()
     return str('Hello. This is sample_top page.')

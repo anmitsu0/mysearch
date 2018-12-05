@@ -3,11 +3,7 @@
 
 import sys
 import mysql.connector
-from lib.bottle import Bottle
 from sample import config
-
-
-app = Bottle()
 
 
 class DB(object):
@@ -28,19 +24,22 @@ class DB(object):
 
     def is_exist_table(self, table_name):
         try:
-            self.curs.execute("""
-                SELECT * FROM {0}
-                WHERE TYPE='table' AND name='{1}';
-                """.format(config.PROJECT_NAME, table_name))
+            # (old)
+            # "SELECT * FROM {0}"
+            # "WHERE TYPE='table' AND name='{1}';"
+            self.curs.execute((
+                "SHOW TABLES FROM {0} LIKE '{1}';"
+            ).format(
+                config.PROJECT_NAME,
+                table_name
+            ))
         except Exception as e:
             self.error_print(e, __file__, self.is_exist_table.__name__)
             self.close_conn()
-        if self.curs is None:
-            return False
-        return True
+        return bool(self.curs.fetchall())
 
     def create_table(self):
         pass
 
     def error_print(self, e, file_name, func_name):
-        sys.stderr.write("{0}\n\tfile:{1}\n\tfunc:{2}".format(e, file_name, func_name))
+        sys.stderr.write("{0}\n\tfile:{1}\n\tfunc:{2}\n".format(e, file_name, func_name))
