@@ -5,22 +5,30 @@
 {% endblock %}
 
 {% block body %}
-    {% if complete_delete_user == "True" %}チェック項目を削除しました<br>{% endif %}
+    {% if complete_delete_user_and_websites == "True" %}チェック項目の削除を実行しました<br>{% endif %}
+    <h3>user info / websites info</h3>
+    <!--TODO: all checkbox select-->
     <form action="/sample/manage" method="post" name="delete_user">
         {% for user in users %}
-            <input type="checkbox" name="delete_user_ids" value="{{ loop.index }}">{{ user.index }}. <br>
-            <table border="0">
-                <tr><td>ユーザーID</td><td onClick="pulldown_user_info({{ roop.index }})">{{ user.id }}</td></tr>
+            <input type="checkbox" name="delete_user_ids" value="{{ user.id }}"><br>
+            <table border="1" cellpadding="3" cellspacing="0">
+                <tr><td>_id</td><td>{{ user._id }}</td></tr>
+                <tr><td>id</td><td>{{ user.id }}</td></tr>
+                <tr><td>websites</td><td>
+                    {% for website in user.websites %}
+                        <table border="1" cellpadding="3" cellspacing="0">
+                            <tr><td>name</td><td>{{ website.name }}</td></tr>
+                            <tr><td>link</td><td>{{ website.link }}</td></tr>
+                            <tr><td>keywords</td><td>{{ website.keywords }}</td></tr>
+                        </table>
+                    {% endfor %}
+                </td></tr>
             </table>
         {% endfor %}
         <font color="red"><input type="button" value="削除" onClick="check()"></font>
         <input type="reset" value="リセット">
     </form>
     {% if attention %}<font color="ff0000">{{ attention }}</font>{% endif %}
-
-    {% for user in users %}
-        <div id="{{ roop.index }}"></div>
-    {% endfor %}
 
     <script>
     <!--
@@ -29,27 +37,6 @@
             document.delete_user.submit();
         }
     }
-
-    function pulldown_user_info(roop_index) {
-        var user_website = document.getElementById(roop_index);  // TODO: loop_indexをstringにしたい
-        if (user_website.innerHTML == "") {
-            // TODO: solve: not execute {% ... %} before insert this one
-            user_website.innerHTML = [
-                "{% for website in user[loop_index].websites %}",
-                    "<table border='0'>",
-                        "<tr><td>サイト名</td><td>{{ website.name }}</td></tr>",
-                        "<tr><td>リンク</td><td>{{ website.link }}</td></tr>",
-                        "<tr><td>キーワード</td><td>{{ website.keywords }}</tr>",
-                        "<!--<tr><td>最頻出ワード</td><td>{{ website.most_frequent_word }}</td></tr>-->",
-                    "</table>",
-                "{% endfor %}"
-            ].join("");
-        }
-        else {
-            user_website.innerHTML = "";
-        }
-    }
-    // -->
     </script>
 
 {% endblock %}

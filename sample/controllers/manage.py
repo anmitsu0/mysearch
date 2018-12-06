@@ -23,22 +23,28 @@ def index():
     if user_id:
         cls_user = db_user.User()
         cls_website = db_website.Website()
-        users_data = cls_user.get_users()
-        users = list(dict())
-        for i in users_data.count():
-            users[i]["index"] = i
-            user_id = users_data[i].get("id", "")
-            users[i]["id"] = user_id if user_id else ""
-            users[i]["websites"] = cls_website.get_websites(users[i]["id"]) if user_id else []
-        delete_user_ids = request.forms.get('delete_user_ids', [])
-        complete_delete_user = "False"
+        delete_user_ids = request.forms.getall('delete_user_ids')
+        # (管理ユーザーのuser_idは除く)
+        if user_id in delete_user_ids:
+            delete_user_ids.remove(user_id)
+        complete_delete_user_and_websites = "False"
         if delete_user_ids:
+            # print(user_id, delete_user_ids)
             cls_user.delete_users(delete_user_ids)
-            complete_delete_user = "True"
+            cls_website.delete_websites_with_user_ids(delete_user_ids)
+            complete_delete_user_and_websites = "True"
+        users_data = cls_user.get_users()
+        users = list()
+        for i in range(len(users_data)):
+            user = dict()
+            user["id"] = tmp_user_id = users_data[i].get("id", "")
+            user["_id"] = users_data[i].get("_id", "")
+            user["websites"] = cls_website.get_websites(user["id"]) if tmp_user_id else []
+            users.append(user)
         return jinja2_template(
             manage_page,
             users=users,
-            complete_delete_user=complete_delete_user
+            complete_delete_user_and_websites=complete_delete_user_and_websites
         )
     else:
         session["last_stay_page"] = manage_page

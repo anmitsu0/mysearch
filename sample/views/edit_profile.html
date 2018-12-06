@@ -8,6 +8,7 @@
     <h2>アカウント：{{ user_id }}</h2>
     {% if complete_update_password == "True" %}ユーザー情報を更新しました<br>{% endif %}
     <a href="search">検索ページに戻る</a>
+    <!--TODO: reset must clear textbox-->
     <form action="/sample/edit_profile" method="post">
         <input type="hidden" name="complete_update_password" value="True">
         <table border="0">

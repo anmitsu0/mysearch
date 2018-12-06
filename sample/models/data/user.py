@@ -82,20 +82,21 @@ class User(db.DB):
         except Exception as e:
             self.error_print(e, __file__, self.register_user.__name__)
             self.conn.rollback()
-    
+
     def delete_users(self, delete_user_ids):
+        # delete_user_ids: not list(_id) but list(user_id)
         copied_delete_user_ids = []
         if delete_user_ids and isinstance(delete_user_ids, list):
             copied_delete_user_ids = delete_user_ids.copy()
         try:
-            for _id in copied_delete_user_ids:
+            for user_id in copied_delete_user_ids:
                 self.curs.execute((
                     "DELETE FROM {0}.{1} "
-                    "WHERE _id = '{2}';"
+                    "WHERE id = '{2}';"
                 ).format(
                     config.PROJECT_NAME,
                     self._TABLE_NAME,
-                    _id
+                    user_id
                 ))
             self.conn.commit()
         except Exception as e:

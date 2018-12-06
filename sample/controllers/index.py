@@ -27,6 +27,7 @@ app.mount('/edit_profile', edit_profile.app)
 
 @app.get('/')
 def index():
+    # TODO: make logout button with each pages
     session = request.environ.get('beaker.session')
     session.delete()
     return str('Hello. This is sample_top page.')

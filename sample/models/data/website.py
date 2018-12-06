@@ -153,3 +153,22 @@ class Website(db.DB):
         except Exception as e:
             self.error_print(e, __file__, self.get_websites.__name__)
             self.conn.rollback()
+
+    def delete_websites_with_user_ids(self, delete_user_ids):
+        copied_delete_user_ids = []
+        if delete_user_ids and isinstance(delete_user_ids, list):
+            copied_delete_user_ids = delete_user_ids.copy()
+        try:
+            for user_id in copied_delete_user_ids:
+                self.curs.execute((
+                    "DELETE FROM {0}.{1} "
+                    "WHERE user_id = '{2}';"
+                ).format(
+                    config.PROJECT_NAME,
+                    self._TABLE_NAME,
+                    user_id
+                ))
+            self.conn.commit()
+        except Exception as e:
+            self.error_print(e, __file__, self.get_websites.__name__)
+            self.conn.rollback()
