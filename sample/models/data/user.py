@@ -68,6 +68,7 @@ class User(db.DB):
             return False
 
     def register_user(self, user_id, user_password):
+        # TODO: check: rename user_id
         try:
             self.curs.execute((
                 "INSERT INTO {0}.{1} (id, password) "

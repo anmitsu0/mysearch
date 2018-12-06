@@ -16,27 +16,24 @@
         </div>
         <input type="hidden" name="websites" value="{{ websites }}">
     </form>
-    <!--TODO: reset must clear textbox-->
     <form action="/sample/search" method="post" name="delete_website">
         {% for website in websites %}
-            <input type="checkbox" name="delete_website_ids" value="{{ website._id }}">{{ website._id }}. <br>
-            <table border="0">
+            <input type="checkbox" name="delete_website_ids" value="{{ website._id }}">
+            {{ loop.index }}. {% if search_word_hit_count %}<b>{{ search_word_hit_count[loop.index0] }}</b>件{% endif %}<br>
+            <table border="1" cellpadding="5"  cellspacing="0">
                 <tr><td>サイト名</td><td>{{ website.name }}</td></tr>
-                <tr><td>リンク</td><td>{{ website.link }}</td></tr>
+                <tr><td>リンク</td><td><a href="{{ website.link }}" target="_blank">{{ website.link }}</a></td></tr>
                 <tr><td>キーワード</td><td>{{ website.keywords }}</td></tr>
-                {% if search_word %}
-                <tr><td>検索ワード</td><td>{{ search_word }}</td></tr>
-                <!--TODO: check index: out of range-->
-                <tr><td>検索ワード ヒット数</td><td>{{ search_word_hit_count[loop.index - 1] }}</td></tr>
-                {% endif %}
                 <!--<tr><td>最頻出ワード</td><td>{{ website.most_frequent_word }}</td></tr>-->
             </table>
+            <br>
         {% endfor %}
         <input type="hidden" name="search_word" value="{{ search_word }}">
-        <input type="hidden" name="search_word_hit_count" value="{{ search_word_hit_count }}">
+        <br>
         <font color="red"><input type="button" value="削除" onClick="check()"></font>
         <input type="button" value="リセット" onclick="clearFormAll()">
     </form>
+    <br>
     <a href="logout">ログアウト</a>
     {% if attention %}<font color="ff0000">{{ attention }}</font>{% endif %}
 

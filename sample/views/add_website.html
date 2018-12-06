@@ -14,9 +14,9 @@
             <input type="submit" value="URL入力">
         </div>
     </form>
-    <!--TODO: reset must clear textbox-->
+    <br>
     <form action="/sample/add_website" method="post">
-        <table border="0">
+        <table border="1" cellpadding="5">
             <tr>
                 <td>サイト名</td>
                 <td><input type="text" name="website_name" value="{{ website_name }}" size="50" maxlength="500"></td>
@@ -31,9 +31,11 @@
             </tr>
         </table>
         <input type="hidden" name="complete_add_website" value="True">
+        <br>
         <input type="submit" value="サイト登録">
         <input type="button" value="リセット" onclick="clearFormAll()">
     </form>
+    <br>
     <a href="logout">ログアウト</a>
     {% if attention %}<font color="ff0000">{{ attention }}</font>{% endif %}
 {% endblock %}

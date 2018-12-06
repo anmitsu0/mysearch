@@ -7,16 +7,15 @@
 {% block body %}
     {% if complete_delete_user_and_websites == "True" %}チェック項目の削除を実行しました<br>{% endif %}
     <h3>user info / websites info</h3>
-    <!--TODO: all checkbox select-->
     <form action="/sample/manage" method="post" name="delete_user">
         {% for user in users %}
             <input type="checkbox" name="delete_user_ids" value="{{ user.id }}"><br>
-            <table border="1" cellpadding="3" cellspacing="0">
+            <table border="1" cellpadding="5" cellspacing="0">
                 <tr><td>_id</td><td>{{ user._id }}</td></tr>
                 <tr><td>id</td><td>{{ user.id }}</td></tr>
                 <tr><td>websites</td><td>
                     {% for website in user.websites %}
-                        <table border="1" cellpadding="3" cellspacing="0">
+                        <table border="1" cellpadding="5" cellspacing="0">
                             <tr><td>name</td><td>{{ website.name }}</td></tr>
                             <tr><td>link</td><td>{{ website.link }}</td></tr>
                             <tr><td>keywords</td><td>{{ website.keywords }}</td></tr>
@@ -40,5 +39,4 @@
     }
     // -->
     </script>
-
 {% endblock %}

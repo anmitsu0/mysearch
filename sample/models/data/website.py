@@ -41,7 +41,7 @@ class Website(db.DB):
             self.conn.rollback()
 
     def add_website(self, user_id, website_name, website_link, website_keywords):
-        # TODO: check: rename website name
+        # TODO: check: rename website_name
         try:
             self.curs.execute((
                 "INSERT INTO {0}.{1} (user_id, name, link, keywords) "
@@ -72,38 +72,22 @@ class Website(db.DB):
             return self.curs.fetchall()
         except Exception as e:
             self.error_print(e, __file__, self.get_websites.__name__)
-            return None
-
-    def get_websites_with_search_word(self, user_id, search_word):
-        # TODO: get websites: not only [title] but also [keywords, body]
-        try:
-            self.curs.execute((
-                "SELECT * FROM {0}.{1} "
-                "WHERE user_id = '{2}' "
-                "AND name LIKE '%{3}%';"
-            ).format(
-                config.PROJECT_NAME,
-                self._TABLE_NAME,
-                user_id,
-                search_word
-            ))
-            return self.curs.fetchall()
-        except Exception as e:
-            self.error_print(e, __file__, self.get_websites.__name__)
-            return None
+            return []
 
     def search_word_hit_count(self, user_id, search_word):
         if not search_word:
             return []
-        websites = self.get_websites_with_search_word(user_id, search_word)
+        websites = self.get_websites(user_id)
         hit_count = []
         try:
             for website in websites:
                 html = requests.get(website["link"])
                 # print("[hit_count] html_info\n{}".format(html.text))
                 soup = BeautifulSoup(html.text, "lxml")
-                body = soup.find("body").text if soup.find("body") else ""
-                hit_count.append(body.count(search_word))
+                # body = soup.find("body").text if soup.find("body") else ""
+                # hit_count.append(body.count(search_word))
+                html_str = soup.prettify()
+                hit_count.append(html_str.count(search_word))
         except Exception as e:
             self.error_print(e, __file__, self.search_word_hit_count.__name__)
         return hit_count

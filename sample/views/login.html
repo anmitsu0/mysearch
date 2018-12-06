@@ -5,10 +5,8 @@
 {% endblock %}
 
 {% block body %}
-
-    <!--TODO: reset must clear textbox-->
     <form action="/sample/login" method="post" id="text_form">
-        <table border="0">
+        <table border="0" cellpadding="5" cellspacing="0">
             <tr>
                 <td>ユーザーID</td>
                 <td><input type="text" name="user_id" value="{{ user_id }}" size="30" maxlength="20"></td>
@@ -28,5 +26,4 @@
     </form>
     <a href="sign_up">ユーザー新規登録</a><br>
     {% if attention %}<font color="ff0000">{{ attention }}</font>{% endif %}
-
 {% endblock %}
