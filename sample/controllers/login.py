@@ -5,6 +5,7 @@ from lib.bottle import Bottle
 from lib.bottle import TEMPLATE_PATH
 from lib.bottle import jinja2_template
 from lib.bottle import request
+from lib.bottle import redirect
 from sample.models.data import user
 from sample import config
 
@@ -22,10 +23,10 @@ def index():
     # セッション情報が残っていた場合
     if session.get("user_id"):
         # 最後にどこかのページに訪問していた場合、そのページに移る
-        if session.get("last_stay_page"):
-            return jinja2_template(session["last_stay_page"])
-        else:
-            return jinja2_template(search_page)
+        if not session.get("last_stay_page"):
+            session["last_stay_page"] = search_page
+            session.save()
+        redirect(redirect_url(session["last_stay_page"]))
     # 初回入場時
     if request.method == "GET":
         return jinja2_template(login_page)
@@ -54,4 +55,8 @@ def index():
     elif not session.get("last_stay_page"):
         session["last_stay_page"] = search_page
     session.save()
-    return jinja2_template(session["last_stay_page"])
+    return redirect(redirect_url(session["last_stay_page"]))
+
+
+def redirect_url(page):
+    return "/{0}/{1}".format(config.SECTION_NAME, page.replace(".html", ""))
