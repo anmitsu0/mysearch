@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding:utf-8 -*-
 
-import datetime
 import requests
 from bs4 import BeautifulSoup
 from sample.models.data import db
