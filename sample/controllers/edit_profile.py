@@ -21,35 +21,31 @@ def index():
     # セッション情報が残っていた場合
     if user_id:
         cls_user = user.User()
-        user_id = request.forms.get('user_id', "")
-        user_password = request.forms.get('user_password', "")
-        confirm_user = request.forms.get('confirm_user', "False")
-        complete_update_user = request.forms.get('complete_update_user', "False")
-        if confirm_user == "True" and not cls_user.confirm_user(user_id, user_password):
-            # エラー(現在の～：該当なし）
-            return jinja2_template(
-                edit_profile_page,
-                attention=u'ユーザー名またはパスワードが登録情報と異なります',
-                user_id=user_id,
-                user_password=user_password,
-                confirm_user="False"
-            )
-        if complete_update_user == "True" and cls_user.confirm_user(user_id, user_password):
-            # エラー(新しい～：重複あり)
-            return jinja2_template(
-                edit_profile_page,
-                attention=u'別のユーザー名・パスワードを使用してください',
-                user_id=user_id,
-                user_password=user_password,
-                confirm_user=confirm_user,
-                complete_update_user="False"
-            )
+        attention = u''
+        current_password = request.forms.get('current_password', "")
+        new_password = request.forms.get('new_password', "")
+        re_new_password = request.forms.get('re_new_password', "")
+        complete_update_password = request.forms.get('complete_update_password', "False")
+        if request.method == "POST":
+            if not current_password or not new_password or not re_new_password:
+                attention = u'入力漏れがあります'
+                complete_update_password = "False"
+            if new_password != re_new_password:
+                attention = u'新しいパスワード(確認用)に同じものを入力してください'
+                complete_update_password = "False"
+            if not cls_user.confirm_user(user_id, current_password):
+                attention = u'現在のパスワードが登録情報と異なります'
+                complete_update_password = "False"
+        if complete_update_password == "True":
+            cls_user.update_password(user_id, current_password, new_password)
         return jinja2_template(
             edit_profile_page,
+            attention=attention,
             user_id=user_id,
-            user_password=user_password,
-            confirm_user=confirm_user,
-            complete_update_user=complete_update_user
+            current_password=current_password,
+            new_password=new_password,
+            re_new_password=re_new_password,
+            complete_update_password=complete_update_password
         )
     else:
         session["last_stay_page"] = edit_profile_page

@@ -14,6 +14,9 @@ class User(db.DB):
         if not self.is_exist_table(self._TABLE_NAME):
             self.create_table()
 
+    def __del__(self):
+        super(User, self).__del__()
+
     def create_table(self):
         try:
             self.curs.execute((
@@ -30,7 +33,7 @@ class User(db.DB):
             self.conn.commit()
         except Exception as e:
             self.error_print(e, __file__, self.create_table.__name__)
-            self.close_conn()
+            self.conn.rollback()
 
     def confirm_user(self, user_id, user_password):
         try:
@@ -47,14 +50,28 @@ class User(db.DB):
             return bool(self.curs.fetchall())
         except Exception as e:
             self.error_print(e, __file__, self.confirm_user.__name__)
-            self.close_conn()
+            return False
+
+    def confirm_user_id(self, user_id):
+        try:
+            self.curs.execute((
+                "SELECT * FROM {0}.{1} "
+                "WHERE id = '{2}';"
+            ).format(
+                config.PROJECT_NAME,
+                self._TABLE_NAME,
+                user_id,
+            ))
+            return bool(self.curs.fetchall())
+        except Exception as e:
+            self.error_print(e, __file__, self.confirm_user.__name__)
             return False
 
     def register_user(self, user_id, user_password):
         try:
             self.curs.execute((
                 "INSERT INTO {0}.{1} (id, password) "
-                "values ('{2}', '{3}');"
+                "VALUES ('{2}', '{3}');"
             ).format(
                 config.PROJECT_NAME,
                 self._TABLE_NAME,
@@ -64,24 +81,26 @@ class User(db.DB):
             self.conn.commit()
         except Exception as e:
             self.error_print(e, __file__, self.register_user.__name__)
-            self.close_conn()
+            self.conn.rollback()
     
     def delete_users(self, delete_user_ids):
         copied_delete_user_ids = []
         if delete_user_ids and isinstance(delete_user_ids, list):
             copied_delete_user_ids = delete_user_ids.copy()
         try:
-            self.curs.execute((
-                "DELETE FROM {0}.{1} "
-                "WHERE _id IN ({2});"
-            ).format(
-                config.PROJECT_NAME,
-                self._TABLE_NAME,
-                *copied_delete_user_ids
-            ))
+            for _id in copied_delete_user_ids:
+                self.curs.execute((
+                    "DELETE FROM {0}.{1} "
+                    "WHERE _id = '{2}';"
+                ).format(
+                    config.PROJECT_NAME,
+                    self._TABLE_NAME,
+                    _id
+                ))
+            self.conn.commit()
         except Exception as e:
             self.error_print(e, __file__, self.delete_users.__name__)
-            self.close_conn()
+            self.conn.rollback()
 
     def get_users(self):
         try:
@@ -94,5 +113,23 @@ class User(db.DB):
             return self.curs.fetchall()
         except Exception as e:
             self.error_print(e, __file__, self.get_users.__name__)
-            self.close_conn()
             return None
+
+    def update_password(self, user_id, current_password, new_password):
+        try:
+            self.curs.execute((
+                "UPDATE {0}.{1} SET "
+                "password = '{2}' "
+                "WHERE id = '{3}' "
+                "AND password = '{4}';"
+            ).format(
+                config.PROJECT_NAME,
+                self._TABLE_NAME,
+                new_password,
+                user_id,
+                current_password
+            ))
+            self.conn.commit()
+        except Exception as e:
+            self.error_print(e, __file__, self.update_password.__name__)
+            self.conn.rollback()

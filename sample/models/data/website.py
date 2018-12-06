@@ -16,6 +16,9 @@ class Website(db.DB):
         if not self.is_exist_table(self._TABLE_NAME):
             self.create_table()
 
+    def __del__(self):
+        super(Website, self).__del__()
+
     def create_table(self):
         try:
             self.curs.execute((
@@ -35,14 +38,14 @@ class Website(db.DB):
             self.conn.commit()
         except Exception as e:
             self.error_print(e, __file__, self.create_table.__name__)
-            self.close_conn()
+            self.conn.rollback()
 
     def add_website(self, user_id, website_name, website_link, website_keywords):
         # TODO: check: rename website name
         try:
             self.curs.execute((
                 "INSERT INTO {0}.{1} (user_id, name, link, keywords) "
-                "values ('{2}', '{3}', '{4}', '{5}');"
+                "VALUES ('{2}', '{3}', '{4}', '{5}');"
             ).format(
                 config.PROJECT_NAME,
                 self._TABLE_NAME,
@@ -54,13 +57,9 @@ class Website(db.DB):
             self.conn.commit()
         except Exception as e:
             self.error_print(e, __file__, self.add_website.__name__)
-            self.close_conn()
+            self.conn.rollback()
 
     def get_websites(self, user_id):
-        # (サイト削除時)
-        # TODO: solve: "tuple index out of range"
-        # 2055: Lost connection to MySQL server at 'localhost:3307', system error: 10038 
-        # ソケット以外のものに対して操作を実行しようとしました。
         try:
             self.curs.execute((
                 "SELECT * FROM {0}.{1} "
@@ -73,7 +72,6 @@ class Website(db.DB):
             return self.curs.fetchall()
         except Exception as e:
             self.error_print(e, __file__, self.get_websites.__name__)
-            self.close_conn()
             return None
 
     def get_websites_with_search_word(self, user_id, search_word):
@@ -92,7 +90,6 @@ class Website(db.DB):
             return self.curs.fetchall()
         except Exception as e:
             self.error_print(e, __file__, self.get_websites.__name__)
-            self.close_conn()
             return None
 
     def search_word_hit_count(self, user_id, search_word):
@@ -109,7 +106,6 @@ class Website(db.DB):
                 hit_count.append(body.count(search_word))
         except Exception as e:
             self.error_print(e, __file__, self.search_word_hit_count.__name__)
-            self.close_conn()
         return hit_count
 
     def get_website_title_with_link(self, link):
@@ -122,7 +118,6 @@ class Website(db.DB):
             return soup.find("title").text
         except Exception as e:
             self.error_print(e, __file__, self.get_website_title_with_link.__name__)
-            self.close_conn()
             return ""
 
     def get_website_keywords_with_link(self, link):
@@ -132,28 +127,29 @@ class Website(db.DB):
             html = requests.get(link)
             # print("[keywords] html_info\n{}".format(html.text))
             soup = BeautifulSoup(html.text, "lxml")
-            return soup.find("meta", attrs={"name": "keywords", "content": True}).get("content", "")
+            meta_keyword = soup.find("meta", attrs={"name": "keywords", "content": True})
+            return meta_keyword.get("content", "") if meta_keyword else ""
         except Exception as e:
             self.error_print(e, __file__, self.get_website_keywords_with_link.__name__)
-            self.close_conn()
             return ""
 
     def delete_websites(self, user_id, delete_website_ids):
-        # TODO: check: case of many delete
         copied_delete_website_ids = []
         if delete_website_ids and isinstance(delete_website_ids, list):
             copied_delete_website_ids = delete_website_ids.copy()
         try:
-            self.curs.execute((
-                "DELETE FROM {0}.{1} "
-                "WHERE user_id = '{2}' "
-                "AND _id IN ({3});"
-            ).format(
-                config.PROJECT_NAME,
-                self._TABLE_NAME,
-                user_id,
-                *copied_delete_website_ids
-            ))
+            for _id in copied_delete_website_ids:
+                self.curs.execute((
+                    "DELETE FROM {0}.{1} "
+                    "WHERE user_id = '{2}' "
+                    "AND _id = '{3}';"
+                ).format(
+                    config.PROJECT_NAME,
+                    self._TABLE_NAME,
+                    user_id,
+                    _id
+                ))
+            self.conn.commit()
         except Exception as e:
             self.error_print(e, __file__, self.get_websites.__name__)
-            self.close_conn()
+            self.conn.rollback()

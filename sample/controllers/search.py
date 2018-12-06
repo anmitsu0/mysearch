@@ -23,9 +23,10 @@ def index():
         cls_website = website.Website()
         search_word = request.forms.decode().get('search_word', "")
         search_word_hit_count = request.forms.get('search_word_hit_count', None)
-        delete_website_ids = request.forms.get('delete_website_ids', [])
+        delete_website_ids = request.forms.getall('delete_website_ids')
         complete_delete_websites = "False"
         if delete_website_ids:
+            # print("\tdelete_website_ids: {}".format(delete_website_ids))
             cls_website.delete_websites(user_id, delete_website_ids)
             complete_delete_websites = "True"
         websites = None

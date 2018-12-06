@@ -5,24 +5,28 @@
 {% endblock %}
 
 {% block body %}
-    {% if complete_update_user == "True" %}ユーザー情報を更新しました{% endif %}
+    <h2>アカウント：{{ user_id }}</h2>
+    {% if complete_update_password == "True" %}ユーザー情報を更新しました<br>{% endif %}
     <a href="search">検索ページに戻る</a>
     <form action="/sample/edit_profile" method="post">
-        {% if confirm_user == "True" %}<input type="hidden" name="complete_update_user" value="True">
-        {% else %}<input type="hidden" name="confirm_user" value="True">{% endif %}
+        <input type="hidden" name="complete_update_password" value="True">
         <table border="0">
             <tr>
-                <td>{% if confirm_user == "True" %}新しい{% else %}現在の{% endif %}ユーザー名</td>
-                <td><input type="text" name="user_name" size="30" maxlength="20"></td>
+                <td>現在のパスワード</td>
+                <td><input type="text" name="current_password" value="{{ current_password }}" size="30" maxlength="20"></td>
             </tr>
             <tr>
-                <td>{% if confirm_user == "True" %}新しい{% else %}現在の{% endif %}パスワード</td>
-                <td><input type="password" name="user_password" size="30" maxlength="20"></td>
+                <td>新しいパスワード</td>
+                <td><input type="password" name="new_password" value="{{ new_password }}" size="30" maxlength="20"></td>
+            </tr>
+            <tr>
+                <td>新しいパスワード(確認用)</td>
+                <td><input type="password" name="re_new_password" value="{{ re_new_password }}" size="30" maxlength="20"></td>
             </tr>
             <tr>
                 <td></td>
                 <td>
-                    <input type="submit" value="{% if confirm_user == 'True' %}決定{% else %}登録{% endif %}">
+                    <input type="submit" value="変更">
                     <input type="reset" value="リセット">
                 </td>
             </tr>

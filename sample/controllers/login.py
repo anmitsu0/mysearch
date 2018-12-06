@@ -37,14 +37,14 @@ def index():
             login_page,
             user_id=user_id,
             user_password=user_password,
-            attention=u'ユーザー名またはパスワードの入力漏れがあります',
+            attention=u'ユーザーIDまたはパスワードの入力漏れがあります',
         )
     if not user.User().confirm_user(user_id, user_password):
         return jinja2_template(
             login_page,
             user_id=user_id,
             user_password=user_password,
-            attention=u'ユーザー名またはパスワードに誤りがあります',
+            attention=u'ユーザーIDまたはパスワードに誤りがあります',
         )
     session["user_id"] = user_id
     # 管理ユーザーのid, passwordが入力されたとき

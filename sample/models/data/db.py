@@ -13,6 +13,10 @@ class DB(object):
         self.conn = self.get_conn()
         self.curs = self.conn.cursor(buffered=True, dictionary=True)
 
+    def __del__(self):
+        self.curs.close()
+        self.close_conn()
+
     def get_conn(self):
         if self._DATABASE is None:
             self.conn = self._DATABASE = mysql.connector.connect(**config.DB_INFO[config.PROJECT_ENV])
@@ -36,7 +40,6 @@ class DB(object):
             return bool(self.curs.fetchall())
         except Exception as e:
             self.error_print(e, __file__, self.is_exist_table.__name__)
-            self.close_conn()
             return False
 
     def create_table(self):
