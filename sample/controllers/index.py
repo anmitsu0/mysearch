@@ -9,7 +9,7 @@ from sample.controllers import search
 from sample.controllers import manage
 from sample.controllers import add_website
 from sample.controllers import edit_profile
-from lib.bottle import request
+from sample.controllers import logout
 
 
 app = Bottle()
@@ -23,11 +23,9 @@ app.mount('/search', search.app)
 app.mount('/manage', manage.app)
 app.mount('/add_website', add_website.app)
 app.mount('/edit_profile', edit_profile.app)
+app.mount("/logout", logout.app)
 
 
 @app.get('/')
 def index():
-    # TODO: make logout button with each pages
-    session = request.environ.get('beaker.session')
-    session.delete()
     return str('Hello. This is sample_top page.')

@@ -35,8 +35,9 @@
         <input type="hidden" name="search_word" value="{{ search_word }}">
         <input type="hidden" name="search_word_hit_count" value="{{ search_word_hit_count }}">
         <font color="red"><input type="button" value="削除" onClick="check()"></font>
-        <input type="reset" value="リセット">
+        <input type="button" value="リセット" onclick="clearFormAll()">
     </form>
+    <a href="logout">ログアウト</a>
     {% if attention %}<font color="ff0000">{{ attention }}</font>{% endif %}
 
     <script>

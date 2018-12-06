@@ -32,7 +32,8 @@
         </table>
         <input type="hidden" name="complete_add_website" value="True">
         <input type="submit" value="サイト登録">
-        <input type="reset" value="リセット">
+        <input type="button" value="リセット" onclick="clearFormAll()">
     </form>
+    <a href="logout">ログアウト</a>
     {% if attention %}<font color="ff0000">{{ attention }}</font>{% endif %}
 {% endblock %}

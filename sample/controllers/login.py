@@ -8,6 +8,7 @@ from lib.bottle import request
 from lib.bottle import redirect
 from sample.models.data import user
 from sample import config
+from sample import util
 
 
 app = Bottle()
@@ -26,7 +27,7 @@ def index():
         if not session.get("last_stay_page"):
             session["last_stay_page"] = search_page
             session.save()
-        redirect(redirect_url(session["last_stay_page"]))
+        redirect(util.redirect_url(session["last_stay_page"]))
     # 初回入場時
     if request.method == "GET":
         return jinja2_template(login_page)
@@ -55,8 +56,4 @@ def index():
     elif not session.get("last_stay_page"):
         session["last_stay_page"] = search_page
     session.save()
-    return redirect(redirect_url(session["last_stay_page"]))
-
-
-def redirect_url(page):
-    return "/{0}/{1}".format(config.SECTION_NAME, page.replace(".html", ""))
+    return redirect(util.redirect_url(session["last_stay_page"]))

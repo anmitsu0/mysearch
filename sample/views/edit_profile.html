@@ -28,11 +28,11 @@
                 <td></td>
                 <td>
                     <input type="submit" value="変更">
-                    <input type="reset" value="リセット">
+                    <input type="button" value="リセット" onclick="clearFormAll()">
                 </td>
             </tr>
         </table>
     </form>
-
+    <a href="logout">ログアウト</a>
     {% if attention %}<font color="ff0000">{{ attention }}</font>{% endif %}
 {% endblock %}
